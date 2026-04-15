@@ -26,9 +26,7 @@
 
     private async Task StartGameClicked()
     {
-        // Create default team with empty names for now
-        var team = new Team();
-        await OnStart.InvokeAsync(team);
+        await OnStart.InvokeAsync();
     }
 }
 
