@@ -1,28 +1,20 @@
-﻿@page "/"
+﻿@* PRE-COMMIT CHECKLIST: [ ] eslint | [ ] dotnet build | [ ] dotnet test *@
+@page "/"
 @using SocOps.Models
 @using SocOps.Services
 @inject BingoGameService GameService
 @implements IDisposable
 
 <PageTitle>Soc Ops - Social Bingo</PageTitle>
-
 @if (GameService.CurrentGameState == GameState.Start)
 {
-    <StartScreen OnStart="@GameService.StartGame" />
+    <StartScreen OnStart="@HandleGameStart" />
 }
 else
 {
-    <GameScreen
-        Board="@GameService.Board"
-        WinningSquareIds="@GameService.WinningSquareIds"
-        HasBingo="@(GameService.CurrentGameState == GameState.Bingo)"
-        OnSquareClick="@GameService.HandleSquareClick"
-        OnReset="@GameService.ResetGame" />
-
-    @if (GameService.ShowBingoModal)
-    {
-        <BingoModal OnDismiss="@GameService.DismissModal" />
-    }
+    <GameScreen Board="@GameService.Board" WinningSquareIds="@GameService.WinningSquareIds"
+        HasBingo="@(GameService.CurrentGameState == GameState.Bingo)" OnSquareClick="@GameService.HandleSquareClick" OnReset="@GameService.ResetGame" Team="@GameService.CurrentTeam" />
+    @if (GameService.ShowBingoModal) { <BingoModal OnDismiss="@GameService.DismissModal" /> }
 }
 
 @code {
@@ -32,8 +24,10 @@ else
         GameService.OnStateChanged += StateHasChanged;
     }
 
-    public void Dispose()
+    private void HandleGameStart(Team team)
     {
-        GameService.OnStateChanged -= StateHasChanged;
+        GameService.StartGame(team);
     }
+
+    public void Dispose() => GameService.OnStateChanged -= StateHasChanged;
 }

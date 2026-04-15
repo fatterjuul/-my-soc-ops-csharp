@@ -63,7 +63,7 @@ public class BingoLogicService
     /// <summary>
     /// Toggle a square's marked state
     /// </summary>
-    public static List<BingoSquareData> ToggleSquare(List<BingoSquareData> board, int squareId)
+    public static List<BingoSquareData> ToggleSquare(List<BingoSquareData> board, int squareId, string? playerId = null)
     {
         return board.Select(square =>
             square.Id == squareId && !square.IsFreeSpace
@@ -72,7 +72,8 @@ public class BingoLogicService
                     Id = square.Id,
                     Text = square.Text,
                     IsMarked = !square.IsMarked,
-                    IsFreeSpace = square.IsFreeSpace
+                    IsFreeSpace = square.IsFreeSpace,
+                    MarkedByPlayerId = square.IsMarked ? null : playerId // Clear player if unmarking, set if marking
                 }
                 : square
         ).ToList();

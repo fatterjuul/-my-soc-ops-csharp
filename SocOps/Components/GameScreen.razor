@@ -12,6 +12,20 @@
         <div class="w-16"></div>
     </header>
 
+    <!-- Team Info Banner -->
+    @if (Team != null && Team.Players.Count > 0)
+    {
+        <div class="bg-blue-50 border-b border-blue-200 p-3">
+            <p class="text-center font-semibold text-gray-900 text-sm mb-1">@Team.Name</p>
+            <div class="flex flex-wrap justify-center gap-2 text-xs">
+                @foreach (var player in Team.Players)
+                {
+                    <span class="bg-white text-gray-700 px-2 py-1 rounded border border-gray-300">@player.Name</span>
+                }
+            </div>
+        </div>
+    }
+
     <!-- Instructions -->
     <p class="text-center text-gray-500 text-sm py-2 px-4">
         Tap a square when you find someone who matches it.
@@ -49,4 +63,7 @@
 
     [Parameter]
     public EventCallback OnReset { get; set; }
+
+    [Parameter]
+    public Team? Team { get; set; }
 }
