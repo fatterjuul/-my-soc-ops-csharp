@@ -24,9 +24,22 @@ else
         GameService.OnStateChanged += StateHasChanged;
     }
 
-    private void HandleGameStart(Team team)
+    private async Task HandleGameStart()
     {
+        // Create default team for testing
+        var team = new Team
+        {
+            Name = "Test Team",
+            Players = new List<Player>
+            {
+                new Player { Name = "Player 1" },
+                new Player { Name = "Player 2" },
+                new Player { Name = "Player 3" },
+                new Player { Name = "Player 4" }
+            }
+        };
         GameService.StartGame(team);
+        await Task.CompletedTask;
     }
 
     public void Dispose() => GameService.OnStateChanged -= StateHasChanged;
